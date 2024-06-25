@@ -6,9 +6,9 @@ import com.my.domain.toDDmmYYYYhhmm
 
 fun ApiNews.toNewsEntity(pageNumber: Int): NewsEntity {
   return NewsEntity(
-    id = id,
-    webPublicationDate = webPublicationDate.toDDmmYYYYhhmm(),
-    webTitle = webTitle,
+    id = id ?: "",
+    webPublicationDate = webPublicationDate?.toDDmmYYYYhhmm() ?: "",
+    webTitle = webTitle ?: "",
     thumbnailUrl = fields?.thumbnail ?: "",
     body = fields?.body ?: "",
     pageNumber = pageNumber
