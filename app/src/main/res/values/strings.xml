@@ -1,0 +1,10 @@
+<resources>
+  <string name="app_name">NewsArticles</string>
+  <string name="hint_search">Search</string>
+  <string name="connection_is">Connection is</string>
+  <string name="available">Available</string>
+  <string name="unavailable">Unavailable</string>">
+  <string name="error_something_went_wrong">Error. Something went wrong</string>
+  <string name="btn_retry">Retry</string>
+  <string name="lable_search">Search news</string>
+</resources>
