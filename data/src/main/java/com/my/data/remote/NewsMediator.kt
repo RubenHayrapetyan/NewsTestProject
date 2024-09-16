@@ -6,9 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.my.data.local.NewsDatabase
-import com.my.domain.entity.local.NewsEntity
-import com.my.domain.entity.remote.ApiNewsResponse
-import com.my.domain.mappers.toNewsEntity
+import com.my.data.mapper.toNewsEntity
+import com.my.data.model.local.NewsEntity
+import com.my.data.model.remote.ApiNewsResponse
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -31,7 +31,7 @@ class NewsMediator(
           val lastItem = state.lastItemOrNull()
           if (lastItem == null || lastItem.pageNumber == 0) {
             return MediatorResult.Success(endOfPaginationReached = true)
-          }else {
+          } else {
             lastItem.pageNumber.plus(1)
           }
         }

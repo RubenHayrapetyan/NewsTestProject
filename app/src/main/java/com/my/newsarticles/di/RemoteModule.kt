@@ -3,6 +3,7 @@ package com.my.newsarticles.di
 import com.my.data.local.NewsDatabase
 import com.my.data.remote.NewsApiService
 import com.my.data.remote.NewsPagerFactoryImpl
+import com.my.newsarticles.util.AppConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,7 @@ object RemoteModule {
   fun provideRetrofit(
     okHttpClient: OkHttpClient,
   ): Retrofit = Retrofit.Builder().apply {
-    baseUrl("https://content.guardianapis.com/")
+    baseUrl(AppConstants.BASE_URL)
     addConverterFactory(MoshiConverterFactory.create())
     client(okHttpClient)
   }.build()

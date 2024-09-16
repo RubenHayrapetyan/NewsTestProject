@@ -1,14 +1,20 @@
 package com.my.data.remote
 
-import com.my.domain.entity.remote.ApiNewsResponse
+import com.my.data.model.remote.ApiNewsResponse
+import com.my.data.util.DataConstants
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApiService {
-  @GET("search?page-size=10&section=news&show-fields=thumbnail,body")
+  @GET(
+    "${DataConstants.BASE_ENDPOINT}?${DataConstants.PAGE_SIZE_KEY}=" +
+        "${DataConstants.PAGE_SIZE_VALUE}&${DataConstants.SECTION_KEY}=" +
+        "${DataConstants.SECTION_VALUE}&${DataConstants.FIELDS_KEY}=" +
+        DataConstants.FIELDS_VALUE
+  )
   suspend fun getNews(
-    @Query("api-key") apiKey: String,
-    @Query("page") page: Int,
-    @Query("q") searchQuery: String? = null,
+    @Query(DataConstants.API_KEY) apiKey: String,
+    @Query(DataConstants.PAGE) page: Int,
+    @Query(DataConstants.QUERY) searchQuery: String? = null,
   ): ApiNewsResponse
 }

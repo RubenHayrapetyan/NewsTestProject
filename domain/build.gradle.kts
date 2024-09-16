@@ -2,7 +2,7 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.jetbrains.kotlin.android)
   alias(libs.plugins.hilt.android)
-  id ("kotlin-kapt")
+  alias(libs.plugins.ksp)
   id ("kotlin-parcelize")
 }
 
@@ -34,19 +34,12 @@ android {
 
 dependencies {
   implementation(libs.hilt.android)
-  kapt (libs.hilt.compiler)
-  implementation (libs.room.paging)
-  implementation (libs.room.runtime)
-  kapt (libs.androidx.room.compiler)
-  implementation (libs.androidx.room.ktx)
-  implementation (libs.retrofit2.converter.moshi)
+  ksp(libs.hilt.compiler)
+  implementation (libs.androidx.paging.runtime)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.material)
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
-}
-kapt {
-  correctErrorTypes = true
 }

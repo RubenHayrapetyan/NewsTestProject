@@ -2,7 +2,7 @@ package com.my.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.my.domain.entity.local.NewsEntity
+import com.my.data.model.local.NewsEntity
 
 @Database(
   entities = [NewsEntity::class],

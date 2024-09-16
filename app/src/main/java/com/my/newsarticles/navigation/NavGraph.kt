@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.my.domain.entity.local.NewsEntity
+import com.my.domain.model.NewsModel
 import com.my.newsarticles.screens.NewsDetailsScreen
 import com.my.newsarticles.screens.NewsScreen
-import com.my.newsarticles.util.Constants
+import com.my.newsarticles.util.AppConstants
 import com.my.presentation.viewmodel.NewsViewModel
 
 @Composable
@@ -35,9 +35,10 @@ fun NavGraph() {
         })
     }
     composable(route = Screen.NewsDetailsScreen.route) {
-      val newsEntity = navController.previousBackStackEntry?.savedStateHandle?.get<NewsEntity>(Constants.ROUTE_NEWS_DETAILS)
+      val newsEntity = navController.previousBackStackEntry?.savedStateHandle?.get<NewsModel>(
+        AppConstants.ROUTE_NEWS_DETAILS)
       newsEntity?.let {
-        NewsDetailsScreen(newsEntity = it)
+        NewsDetailsScreen(newsModel = it)
       }
     }
   }

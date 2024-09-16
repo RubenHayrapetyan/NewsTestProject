@@ -1,9 +1,9 @@
 package com.my.domain.usecase
 
 import androidx.paging.PagingData
-import com.my.domain.entity.local.NewsEntity
+import com.my.domain.model.NewsModel
 import kotlinx.coroutines.flow.Flow
 
 interface GetNewsUseCase {
-  operator fun invoke(searchQuery: String? = null): Flow<PagingData<NewsEntity>>
+  operator fun invoke(searchQuery: String? = null): Flow<PagingData<NewsModel>>
 }

@@ -1,12 +1,10 @@
-package com.my.domain.entity.local
+package com.my.data.model.local
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
+import com.my.data.util.DataConstants
 
-@Parcelize
-@Entity(tableName = "articles")
+@Entity(tableName = DataConstants.ARTICLES_TABLE)
 data class NewsEntity(
   @PrimaryKey
   val id: String,
@@ -15,4 +13,4 @@ data class NewsEntity(
   val thumbnailUrl: String,
   val body: String,
   val pageNumber: Int,
-): Parcelable
+)

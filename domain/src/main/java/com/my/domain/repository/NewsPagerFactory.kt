@@ -1,8 +1,9 @@
 package com.my.domain.repository
 
-import androidx.paging.Pager
-import com.my.domain.entity.local.NewsEntity
+import androidx.paging.PagingData
+import com.my.domain.model.NewsModel
+import kotlinx.coroutines.flow.Flow
 
 interface NewsPagerFactory {
-  fun createPager(searchQuery: String?): Pager<Int, NewsEntity>
+  fun createPager(searchQuery: String?): Flow<PagingData<NewsModel>>
 }

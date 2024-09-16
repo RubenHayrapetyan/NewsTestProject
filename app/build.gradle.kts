@@ -3,7 +3,7 @@ plugins {
   alias(libs.plugins.jetbrains.kotlin.android)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.hilt.android)
-  id ("kotlin-kapt")
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -39,7 +39,7 @@ android {
     compose = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.1"
+    kotlinCompilerExtensionVersion = "1.5.15"
   }
   packaging {
     resources {
@@ -57,7 +57,7 @@ dependencies {
   implementation (libs.androidx.navigation.compose)
   implementation(libs.room.runtime)
   implementation (libs.room.paging)
-  implementation (libs.androidx.paging.runtime.ktx)
+  ksp(libs.androidx.room.compiler)
   implementation (libs.androidx.paging.compose)
   implementation (libs.retrofit)
   implementation (libs.retrofit2.converter.moshi)
@@ -65,7 +65,7 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtime.ktx.v270)
   implementation(libs.androidx.activity.compose.v182)
   implementation(libs.hilt.android)
-  kapt (libs.hilt.compiler)
+  ksp(libs.hilt.compiler)
   implementation (libs.hilt.navigation.compose)
   implementation(libs.coil.compose)
   implementation(libs.androidx.core.ktx)
@@ -81,7 +81,4 @@ dependencies {
   androidTestImplementation(libs.androidx.ui.test.junit4)
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
-}
-kapt {
-  correctErrorTypes = true
 }

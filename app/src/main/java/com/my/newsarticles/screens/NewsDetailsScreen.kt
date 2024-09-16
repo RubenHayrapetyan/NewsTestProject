@@ -18,32 +18,32 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.my.domain.entity.local.NewsEntity
+import com.my.domain.model.NewsModel
 import org.jsoup.Jsoup
 
 @Composable
-fun NewsDetailsScreen(newsEntity: NewsEntity) {
+fun NewsDetailsScreen(newsModel: NewsModel) {
   Column(
     modifier = Modifier
       .fillMaxSize()
       .padding(20.dp),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
-    val title: String = newsEntity.webTitle
+    val title: String = newsModel.webTitle
     if (title.isNotEmpty()) {
       Text(
-        text = newsEntity.webTitle,
+        text = title,
         fontSize = 20.sp,
         modifier = Modifier.fillMaxWidth(),
       )
       Spacer(modifier = Modifier.height(16.dp))
     }
 
-    val imageUrl = newsEntity.thumbnailUrl
+    val imageUrl = newsModel.thumbnailUrl
     if (imageUrl.isNotEmpty()) {
       AsyncImage(
-        model = newsEntity.thumbnailUrl,
-        contentDescription = newsEntity.thumbnailUrl,
+        model = imageUrl,
+        contentDescription = imageUrl,
         modifier = Modifier
           .fillMaxWidth()
           .height(200.dp),
@@ -51,7 +51,7 @@ fun NewsDetailsScreen(newsEntity: NewsEntity) {
       Spacer(modifier = Modifier.height(16.dp))
     }
 
-    val dateAndTime = newsEntity.webPublicationDate
+    val dateAndTime = newsModel.webPublicationDate
     if (dateAndTime.isNotEmpty()) {
       Text(
         text = dateAndTime,
@@ -62,7 +62,7 @@ fun NewsDetailsScreen(newsEntity: NewsEntity) {
       Spacer(modifier = Modifier.height(16.dp))
     }
 
-    val bodyText = newsEntity.body
+    val bodyText = newsModel.body
     if (bodyText.isNotEmpty()) {
       val convertedBodyText = Jsoup.parse(bodyText).text()
 

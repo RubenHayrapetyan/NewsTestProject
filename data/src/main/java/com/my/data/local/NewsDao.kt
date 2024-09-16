@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.my.domain.entity.local.NewsEntity
+import com.my.data.model.local.NewsEntity
 
 @Dao
 interface NewsDao {

@@ -33,6 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -46,16 +48,16 @@ import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
-import com.my.domain.entity.local.NewsEntity
+import com.my.domain.model.NewsModel
 import com.my.newsarticles.R
-import com.my.newsarticles.util.Constants
+import com.my.newsarticles.util.AppConstants
 import kotlinx.coroutines.launch
 
 @Composable
 fun NewsScreen(
   navController: NavHostController,
   isInternetAvailable: Boolean,
-  newsPagingItems: LazyPagingItems<NewsEntity>,
+  newsPagingItems: LazyPagingItems<NewsModel>,
   onSearchQueryChange: (String) -> Unit
 ) {
   Column(
@@ -66,7 +68,8 @@ fun NewsScreen(
     val listState: LazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    ShowInternetStatus(isInternetAvailable)
+    InternetStatus(isInternetAvailable)
+
     Spacer(modifier = Modifier.height(16.dp))
 
     SearchBar {
@@ -82,19 +85,19 @@ fun NewsScreen(
         .fillMaxSize()
         .padding(top = 20.dp)
     ) {
-      NewsList(listState = listState, newsPagingItems = newsPagingItems) { newsEntity ->
+      NewsList(listState = listState, newsPagingItems = newsPagingItems) { newsModel ->
         navController.currentBackStackEntry?.savedStateHandle?.set(
-          key = Constants.ROUTE_NEWS_DETAILS,
-          value = newsEntity
+          key = AppConstants.ROUTE_NEWS_DETAILS,
+          value = newsModel
         )
-        navController.navigate(Constants.ROUTE_NEWS_DETAILS)
+        navController.navigate(AppConstants.ROUTE_NEWS_DETAILS)
       }
     }
   }
 }
 
 @Composable
-private fun ShowInternetStatus(isInternetAvailable: Boolean) {
+private fun InternetStatus(isInternetAvailable: Boolean) {
   val internetStatusText = if (isInternetAvailable) {
     buildAnnotatedString {
       append(stringResource(id = R.string.connection_is))
@@ -119,8 +122,8 @@ private fun ShowInternetStatus(isInternetAvailable: Boolean) {
 @Composable
 private fun NewsList(
   listState: LazyListState,
-  newsPagingItems: LazyPagingItems<NewsEntity>,
-  onNewsClick: (NewsEntity) -> Unit
+  newsPagingItems: LazyPagingItems<NewsModel>,
+  onNewsClick: (NewsModel) -> Unit
 ) {
   LazyColumn(
     state = listState,
@@ -129,9 +132,9 @@ private fun NewsList(
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     items(newsPagingItems.itemCount) { index ->
-      newsPagingItems[index]?.let { newsEntity ->
+      newsPagingItems[index]?.let { newsModel ->
         NewsItem(
-          newsEntity = newsEntity,
+          newsModel = newsModel,
           modifier = Modifier.fillMaxWidth(),
           onNewsClick = { news ->
             onNewsClick(news)
@@ -147,7 +150,7 @@ private fun NewsList(
 
         loadState.append is LoadState.Loading -> {
           item {
-            Text(text = "Loading next item ...")
+            Text(text = stringResource(R.string.loading_next_item))
           }
         }
 
@@ -177,13 +180,13 @@ private fun NewsList(
 
 @Composable
 private fun NewsItem(
-  newsEntity: NewsEntity,
+  newsModel: NewsModel,
   modifier: Modifier = Modifier,
-  onNewsClick: (NewsEntity) -> Unit
+  onNewsClick: (NewsModel) -> Unit
 ) {
   Card(
     modifier = modifier.clickable {
-      onNewsClick(newsEntity)
+      onNewsClick(newsModel)
     },
   ) {
     Row(
@@ -192,11 +195,11 @@ private fun NewsItem(
         .height(IntrinsicSize.Max)
         .padding(16.dp)
     ) {
-      val imageUrl = newsEntity.thumbnailUrl
+      val imageUrl = newsModel.thumbnailUrl
       if (imageUrl.isNotEmpty()) {
         AsyncImage(
-          model = newsEntity.thumbnailUrl,
-          contentDescription = newsEntity.thumbnailUrl,
+          model = newsModel.thumbnailUrl,
+          contentDescription = newsModel.thumbnailUrl,
           modifier = Modifier
             .weight(2f)
             .height(150.dp),
@@ -211,13 +214,13 @@ private fun NewsItem(
         verticalArrangement = Arrangement.Center
       ) {
         Text(
-          text = newsEntity.webTitle,
+          text = newsModel.webTitle,
           style = MaterialTheme.typography.labelLarge,
           modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        val dateAndTime = newsEntity.webPublicationDate
+        val dateAndTime = newsModel.webPublicationDate
         if (dateAndTime.isNotEmpty()) {
           Text(
             text = dateAndTime,
@@ -232,7 +235,7 @@ private fun NewsItem(
 }
 
 @Composable
-fun ErrorMessage(
+private fun ErrorMessage(
   message: String?,
   modifier: Modifier = Modifier,
   onClickRetry: () -> Unit
@@ -253,12 +256,13 @@ fun ErrorMessage(
   }
 }
 
-
 @Composable
 private fun SearchBar(
   onQueryChange: (String) -> Unit
 ) {
   var searchQuery by rememberSaveable { mutableStateOf("") }
+  val focusManager = LocalFocusManager.current
+  val keyboardController = LocalSoftwareKeyboardController.current
 
   OutlinedTextField(
     value = searchQuery,
@@ -273,7 +277,8 @@ private fun SearchBar(
     ),
     keyboardActions = KeyboardActions(
       onSearch = {
-        onQueryChange(searchQuery)
+        keyboardController?.hide()
+        focusManager.clearFocus()
       }
     )
   )

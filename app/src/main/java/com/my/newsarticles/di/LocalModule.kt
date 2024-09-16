@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.my.data.local.NewsDao
 import com.my.data.local.NewsDatabase
+import com.my.newsarticles.util.AppConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ object LocalModule {
   @Provides
   @Singleton
   fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
-    return Room.databaseBuilder(context, NewsDatabase::class.java, "news_articles.db")
+    return Room.databaseBuilder(context, NewsDatabase::class.java, AppConstants.DB_NAME)
       .fallbackToDestructiveMigration()
       .build()
   }

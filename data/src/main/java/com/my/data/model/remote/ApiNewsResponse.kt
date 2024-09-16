@@ -1,4 +1,4 @@
-package com.my.domain.entity.remote
+package com.my.data.model.remote
 
 import com.squareup.moshi.Json
 
